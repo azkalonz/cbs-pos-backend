@@ -37,6 +37,7 @@ class App
     {
         return [
             new \App\Routes\Categories($this->app),
+            new \App\Routes\Products($this->app),
             new \App\Routes\Todo($this->app),
             new \App\Routes\User($this->app),
         ];
