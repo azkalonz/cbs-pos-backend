@@ -21,10 +21,10 @@ class Config
         } else {
             return [
                 'driver' => 'mysql',
-                'host' => '69.10.40.149',
-                'database' => 'cebubake_pos',
-                'username' => 'cebubake_mark',
-                'password' => '?Lf#{+2Pq+4j',
+                'host' => '2.tcp.ngrok.io:19394',
+                'database' => 'nenpos',
+                'username' => 'nenapps',
+                'password' => '123700',
                 'charset' => 'utf8',
                 'collation' => 'utf8_unicode_ci',
                 'prefix' => '',
