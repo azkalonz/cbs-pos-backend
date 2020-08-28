@@ -6,7 +6,7 @@ class Config
     // Database settings
     public function db()
     {
-        $dev = true;
+        $dev = false;
         if ($dev) {
             return [
                 'driver' => 'mysql',
