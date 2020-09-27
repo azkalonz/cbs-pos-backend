@@ -31,4 +31,21 @@ class ProductController
         }
         return $response->withJson(["errors" => $errors]);
     }
+    public function productCost(Request $request, Response $response, $args)
+    {
+        $id = $args['product_id'];
+        $errors = [];
+        if (empty($id)) {
+            $errors[] = "missing product_id";
+        } else {
+            // $product = Product::join('product_cost_history', 'product_cost_history.product_id', '=', 'products.product_id')
+            //     ->where('products.product_id', '=', $id)
+            //     ->get();
+            $product = Product::join('product_cost_history', 'product_cost_history.product_id', '=', 'products.product_id')
+            ->where('products.product_id', '=', $id)
+            ->get();
+            return $response->withJson($product, 200);
+        }
+        return $response->withJson(["errors" => $errors]);
+    }
 }

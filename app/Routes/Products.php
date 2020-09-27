@@ -7,5 +7,6 @@ class Products
     {
         $app->get('/products', '\App\Controllers\ProductController:all');
         $app->get('/product/{product_id}', '\App\Controllers\ProductController:find');
+        $app->get('/product/{product_id}/cost', '\App\Controllers\ProductController:productCost');
     }
 }
