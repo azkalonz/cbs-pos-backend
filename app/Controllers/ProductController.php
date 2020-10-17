@@ -10,10 +10,15 @@ class ProductController
     public function all(Request $request, Response $response)
     {
         $products = Product::join('product_prices', 'product_prices.product_id', '=', 'products.product_id')
+            ->where('products.invisible','!=','1')
+            ->where('products.product_status_id','=','1')
             ->groupBy('products.product_id')
             ->get();
         if (!empty($_GET['search'])) {
-            $products = Product::where('product_name', 'LIKE', '%' . $_GET['search'] . '%')->get();
+            $products = Product::where('product_name', 'LIKE', '%' . $_GET['search'] . '%')
+                        ->where('products.invisible','!=','1')
+                        ->where('products.product_status_id','=','1')
+                        ->get();
         }
         return $response->withJson($products, 200);
     }
@@ -26,6 +31,8 @@ class ProductController
         } else {
             $product = Product::join('product_prices', 'product_prices.product_id', '=', 'products.product_id')
                 ->where('products.product_id', '=', $id)
+                ->where('products.invisible','!=','1')
+                ->where('products.product_status_id','=','1')
                 ->get();
             return $response->withJson($product[0], 200);
         }
@@ -43,6 +50,8 @@ class ProductController
             //     ->get();
             $product = Product::join('product_cost_history', 'product_cost_history.product_id', '=', 'products.product_id')
             ->where('products.product_id', '=', $id)
+            ->where('products.invisible','!=','1')
+            ->where('products.product_status_id','=','1')
             ->get();
             return $response->withJson($product, 200);
         }
