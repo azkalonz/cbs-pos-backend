@@ -4,17 +4,29 @@ namespace App\Controllers;
 use App\Models\Product;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class ProductController
 {
     public function all(Request $request, Response $response)
     {
-        $products = Product::join('product_prices', 'product_prices.product_id', '=', 'products.product_id')
-            ->where('products.invisible','!=','1')
-            ->where('products.product_status_id','=','1')
-            ->groupBy('products.product_id')
-		->orderBy('products.product_name', 'ASC')
-            ->get();
+        $products = DB::select("SELECT * FROM products 
+        INNER JOIN product_cost_history 
+        ON products.product_id = product_cost_history.product_id 
+        WHERE products.invisible != 1
+        AND products.product_status_id = 1
+        AND product_cost_history.date_time = (
+            SELECT MAX(date_time)
+            FROM product_cost_history
+            WHERE product_id = products.product_id
+          )
+        ORDER BY products.product_name DESC");
+        // $products = Product::join('product_prices', 'product_prices.product_id', '=', 'products.product_id')
+        //     ->where('products.invisible', '!=', '1')
+        //     ->where('products.product_status_id', '=', '1')
+        //     ->groupBy('products.product_id')
+        //     ->orderBy('products.product_name', 'ASC')
+        //     ->get();
         if (!empty($_GET['search'])) {
             $products = Product::where('product_name', 'LIKE', '%' . $_GET['search'] . '%')
                         ->where('products.invisible','!=','1')
