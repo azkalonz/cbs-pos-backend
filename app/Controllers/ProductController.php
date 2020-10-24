@@ -10,9 +10,10 @@ class ProductController
 {
     public function all(Request $request, Response $response)
     {
-        $products = DB::select("SELECT * FROM products 
+        $products = DB::select("SELECT * FROM (products 
         INNER JOIN product_cost_history 
-        ON products.product_id = product_cost_history.product_id 
+        ON products.product_id = product_cost_history.product_id)
+        INNER JOIN product_prices ON products.product_id = product_prices.product_id 
         WHERE products.invisible != 1
         AND products.product_status_id = 1
         AND product_cost_history.date_time = (
