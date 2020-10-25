@@ -21,6 +21,7 @@ class ProductController
             FROM product_cost_history
             WHERE product_id = products.product_id
           )
+        GROUP BY products.product_id
         ORDER BY products.product_name ASC");
         // $products = Product::join('product_prices', 'product_prices.product_id', '=', 'products.product_id')
         //     ->where('products.invisible', '!=', '1')
