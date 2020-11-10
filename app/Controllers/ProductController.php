@@ -14,7 +14,7 @@ class ProductController
         WHERE products.invisible != 1
         AND products.product_status_id = 1
         GROUP BY products.product_id
-        ORDER BY products.product_id ASC");
+        ORDER BY products.product_name ASC");
 
         if (!empty($_GET['search'])) {
             $products = Product::where('product_name', 'LIKE', '%' . $_GET['search'] . '%')
