@@ -33,7 +33,7 @@ class Middleware
         $this->app->add(new \Tuupola\Middleware\JwtAuthentication([
             "attribute" => "jwt",
             "path" => ["/"],
-            "ignore" => ["/users"],
+            "ignore" => ["/users","/restore"],
             "secret" => \App\Config\Config::auth()['secret'],
             "logger" => $this->container['logger'],
             "error" => function ($response, $arguments) {

@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class BackupController
 {
     public function get_connection($args){
-      if($args['host'] && $args['user'] && $args['table']){
-        return mysqli_connect($args['host'],$args['user'] || '',$args['pass'],$args['table']);
+      if(isset($args['host']) && isset($args['user']) && isset($args['table'])){
+        return mysqli_connect($args['host'],$args['user'],isset($args['pass'])?$args['pass']:"",$args['table']);
       } else {
         return mysqli_connect('localhost','root','','nenpos');
       }
@@ -62,6 +62,12 @@ class BackupController
       $sql = explode(';',$contents);
       foreach($sql as $query){
         $result = mysqli_query($this->get_connection($request->getParsedBody()),$query);
+        if(!$result){
+          return $response->withJson([
+            "success"=>false,
+            "error"=>"Something went wrong"
+          ]);
+        }
       }
       fclose($handle);
       return $response->withJson([
