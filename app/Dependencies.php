@@ -26,8 +26,8 @@ class Dependencies {
             $capsule = new \Illuminate\Database\Capsule\Manager;
             $capsule->addConnection($c['settings']['db']);
 
-            $capsule->setAsGlobal();
             $capsule->bootEloquent();
+            $capsule->setAsGlobal();
 
             return $capsule;
         };

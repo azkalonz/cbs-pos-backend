@@ -3,3 +3,6 @@ RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
+Header add Access-Control-Allow-Origin "http://localhost:3000"
+Header add Access-Control-Allow-Headers "origin, x-requested-with, authorization, content-type"
+Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"

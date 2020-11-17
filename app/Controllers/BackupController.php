@@ -9,30 +9,27 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class BackupController
 {
-    public $connection;
-    public function __construct(){
-      $this->connection = mysqli_connect('localhost','root','','nenpos');
-    }
-    public function connect($args){
+    public function get_connection($args){
       if($args['host'] && $args['user'] && $args['table']){
-        $this->connection = mysqli_connect($args['host'],$args['user'] || '',$args['pass'],$args['table']);
+        return mysqli_connect($args['host'],$args['user'] || '',$args['pass'],$args['table']);
+      } else {
+        return mysqli_connect('localhost','root','','nenpos');
       }
     }
     public function backup(Request $request, Response $response){
-      connect($request->getParsedBody());
       $tables = array();
-      $result = mysqli_query($this->connection,"SHOW TABLES");
+      $result = mysqli_query($this->get_connection($request->getParsedBody()),"SHOW TABLES");
       while($row = mysqli_fetch_row($result)){
         if($row[0]!="product_history" && $row[0]!="product_cost_history" && $row[0]!="product_price_history")
           $tables[] = $row[0];
       }
       $return = '';
       foreach($tables as $table){
-        $result = mysqli_query($this->connection,"SELECT * FROM ".$table);
+        $result = mysqli_query($this->get_connection($request->getParsedBody()),"SELECT * FROM ".$table);
         $num_fields = mysqli_num_fields($result);
         
         $return .= 'DROP TABLE '.$table.';';
-        $row2 = mysqli_fetch_row(mysqli_query($this->connection,"SHOW CREATE TABLE ".$table));
+        $row2 = mysqli_fetch_row(mysqli_query($this->get_connection($request->getParsedBody()),"SHOW CREATE TABLE ".$table));
         $return .= "\n\n".$row2[1].";\n\n";
         
         for($i=0;$i<$num_fields;$i++){
@@ -58,14 +55,13 @@ class BackupController
         ]);
     }
     public function restore(Request $request, Response $response){
-      connect($request->getParsedBody());
       ini_set('memory_limit', '-1');
       $filename = 'backup.sql';
       $handle = fopen($filename,"r+");
       $contents = fread($handle,filesize($filename));
       $sql = explode(';',$contents);
       foreach($sql as $query){
-        $result = mysqli_query($this->connection,$query);
+        $result = mysqli_query($this->get_connection($request->getParsedBody()),$query);
       }
       fclose($handle);
       return $response->withJson([
@@ -74,7 +70,7 @@ class BackupController
     }
     // public function erase(){
     //   $tables = array();
-    //   $result = mysqli_query($this->connection,"SHOW TABLES");
+    //   $result = mysqli_query($this->get_connection($request->getParsedBody()),"SHOW TABLES");
     //   while($row = mysqli_fetch_row($result)){
     //     if($row[0]!="users")
     //       $tables[] = $row[0];
@@ -82,7 +78,7 @@ class BackupController
     //   $return = '';
     //   foreach($tables as $table){
     //     $query = "TRUNCATE ".$table;
-    //     mysqli_query($this->connection,$query);
+    //     mysqli_query($this->get_connection($request->getParsedBody()),$query);
     //   }
     // }
 }

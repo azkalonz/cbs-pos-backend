@@ -6,8 +6,6 @@ class Config
     // Database settings
     public function db()
     {
-        $dev = true;
-        if ($dev) {
             return [
                 'driver' => 'mysql',
                 'host' => 'localhost:3306',
@@ -18,18 +16,6 @@ class Config
                 'collation' => 'utf8_unicode_ci',
                 'prefix' => '',
             ];
-        } else {
-            return [
-                'driver' => 'mysql',
-                'host' => '2.tcp.ngrok.io:19394',
-                'database' => 'nenpos',
-                'username' => 'nenapps',
-                'password' => '123700',
-                'charset' => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix' => '',
-            ];
-        }
     }
     // Slim settings
     public function slim()
