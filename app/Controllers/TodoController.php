@@ -13,7 +13,7 @@ class TodoController {
     private $db;
     private $validator;
     
-    private $table;
+private $table;
 
     // Dependency injection via constructor
     public function __construct($depLogger, $depDB, $depValidator) {

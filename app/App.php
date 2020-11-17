@@ -41,6 +41,7 @@ class App
             new \App\Routes\Todo($this->app),
             new \App\Routes\User($this->app),
             new \App\Routes\Sales($this->app),
+            new \App\Routes\Backup($this->app),
         ];
     }
 }
