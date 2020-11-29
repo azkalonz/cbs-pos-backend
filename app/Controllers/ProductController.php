@@ -17,9 +17,18 @@ class ProductController
         ORDER BY products.product_name ASC");
 
         if (!empty($_GET['search'])) {
-            $products = Product::where('product_name', 'LIKE', '%' . $_GET['search'] . '%')
+            $products = Product::
+                        join(DB::raw('(SELECT * FROM product_prices WHERE price_type_id = 1 GROUP BY product_id) AS product_prices'),
+                        'product_prices.product_id', '=', 'products.product_id'
+                        )
+                        ->where('product_name', 'LIKE', '%' . $_GET['search'] . '%')
+                        ->orWhere("code",$_GET['search'])
                         ->where('products.invisible','!=','1')
-                        ->where('products.product_status_id','=','1')->orderBy('products.product_name', 'ASC')
+                        ->where('products.product_status_id','=','1')
+                        ->where("product_prices.price","!=",0)
+                        ->select("products.*","product_prices.price as price")
+                        ->orderBy('products.product_name', 'ASC')
+                        ->limit(10)
                         ->get();
         }
         return $response->withJson($products, 200);

@@ -9,7 +9,7 @@ class Config
             return [
                 'driver' => 'mysql',
                 'host' => 'localhost:3306',
-                'database' => 'nenpos',
+                'database' => 'nenpos2',
                 'username' => 'root',
                 'password' => '',
                 'charset' => 'utf8',

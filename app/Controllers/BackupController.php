@@ -20,7 +20,8 @@ class BackupController
       $tables = array();
       $result = mysqli_query($this->get_connection($request->getParsedBody()),"SHOW TABLES");
       while($row = mysqli_fetch_row($result)){
-        if($row[0]!="product_history" && $row[0]!="product_cost_history" && $row[0]!="product_price_history")
+        // if($row[0]!="product_history" && $row[0]!="product_cost_history" && $row[0]!="product_price_history")
+        if($row[0] == 'products' || $row[0] == 'product_prices')
           $tables[] = $row[0];
       }
       $return = '';

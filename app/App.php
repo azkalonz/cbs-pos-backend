@@ -1,5 +1,7 @@
 <?php
+
 namespace App;
+date_default_timezone_set('Asia/Manila');
 
 class App
 {
@@ -42,6 +44,7 @@ class App
             new \App\Routes\User($this->app),
             new \App\Routes\Sales($this->app),
             new \App\Routes\Backup($this->app),
+            new \App\Routes\Transaction($this->app),
         ];
     }
 }
