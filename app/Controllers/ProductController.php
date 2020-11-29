@@ -10,7 +10,7 @@ class ProductController
 {
     public function all(Request $request, Response $response)
     {
-        $products = DB::select("select * from products INNER JOIN product_prices ON products.product_id = product_prices.product_id 
+        $products = DB::select("select products.*,products.product_id,product_prices.price from products LEFT JOIN product_prices ON products.product_id = product_prices.product_id 
         WHERE products.invisible != 1
         AND products.product_status_id = 1
         GROUP BY products.product_id
@@ -40,12 +40,12 @@ class ProductController
         if (empty($id)) {
             $errors[] = "missing product_id";
         } else {
-            $product = Product::join('product_prices', 'product_prices.product_id', '=', 'products.product_id')
-                ->where('products.product_id', '=', $id)
-                ->where('products.invisible','!=','1')
-                ->where('products.product_status_id','=','1')->orderBy('products.product_name', 'ASC')
-                ->get();
-            return $response->withJson($product[0], 200);
+            $product = Product::where('product_id', '=', $id)
+                ->get()
+                ->first();
+            $price = DB::table("product_prices")->where("product_id",$id)->get()->first();
+            $product['price'] = $price?$price->price:0;
+            return $response->withJson($product, 200);
         }
         return $response->withJson(["errors" => $errors]);
     }
