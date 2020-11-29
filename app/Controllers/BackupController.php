@@ -50,9 +50,14 @@ class BackupController
         $handle = fopen("backup.sql","w+");
         fwrite($handle,$return);
         fclose($handle);
-        return $response->withJson([
-          "success"=>true
-        ]);
+        $file = $_SERVER["DOCUMENT_ROOT"].'/backup.sql';
+        $date = date("m-d-y");
+        $file_name = "backup-$date.sql";
+        header("Content-type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=$file_name");
+        header("Content-Transfer-Encoding: Binary"); 
+        
+        readfile($file);
     }
     public function restore(Request $request, Response $response){
       ini_set('memory_limit', '-1');
