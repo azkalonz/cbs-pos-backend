@@ -25,7 +25,7 @@ class TransactionController
     }
     public function delete(Request $request, Response $response,$args){
         if(isset($args['transaction_id'])){
-            $transaction = Transaction::where("transaction_id",$args['transaction_id'])->delete();
+            $transaction = Transaction::where("transaction_id",$args['transaction_id'])->update(['visible'=>false]);
             return $response->withJson([
                 "success"=>$transaction?true:false
             ]);
