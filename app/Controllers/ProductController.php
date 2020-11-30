@@ -23,8 +23,6 @@ class ProductController
                         )
                         ->where('product_name', 'LIKE', '%' . $_GET['search'] . '%')
                         ->orWhere("code",$_GET['search'])
-                        ->where('products.invisible','!=','1')
-                        ->where('products.product_status_id','=','1')
                         ->where("product_prices.price","!=",0)
                         ->select("products.*","product_prices.price as price")
                         ->orderBy('products.product_name', 'ASC')
