@@ -7,5 +7,6 @@ class Transaction {
         $app->get('/transaction/{transaction_id}', '\App\Controllers\TransactionController:get');
         $app->post('/transaction', '\App\Controllers\TransactionController:post');
         $app->delete('/transaction/{transaction_id}', '\App\Controllers\TransactionController:delete');
+        $app->get('/last-order', '\App\Controllers\TransactionController:lastOrder');
     }
 }

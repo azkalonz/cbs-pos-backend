@@ -8,6 +8,9 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class TransactionController
 {
+    public function lastOrder(Request $request, Response $response){
+        return $response->withJson(Transaction::orderBy('transaction_id','DESC')->get()->first());
+    }
     public function get(Request $request, Response $response, $args){
         if(isset($args['transaction_id'])){
             return $response->withJson(Transaction::where("transaction_id",$args['transaction_id'])->get()->first());

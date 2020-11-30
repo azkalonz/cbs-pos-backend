@@ -9,7 +9,7 @@ class User extends Model
 {
     use SoftDeletes; // toggle soft deletes
     protected $table = 'users';
-    protected $fillable = ['username', 'password']; // for mass creation
+    protected $fillable = ['username', 'password', 'user_type']; // for mass creation
     protected $hidden = ['password', 'deleted_at']; // hidden columns from select results
     protected $dates = ['deleted_at']; // the attributes that should be mutated to dates
     public function categories()
