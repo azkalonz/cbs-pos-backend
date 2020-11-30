@@ -13,9 +13,9 @@ class TransactionController
     }
     public function get(Request $request, Response $response, $args){
         if(isset($args['transaction_id'])){
-            return $response->withJson(Transaction::where("transaction_id",$args['transaction_id'])->get()->first());
+            return $response->withJson(Transaction::where("transaction_id",$args['transaction_id'])->where("visible",1)->get()->first());
         } else {
-            return $response->withJson(Transaction::get()->toArray());
+            return $response->withJson(Transaction::where("visible",1)->get()->toArray());
         }
     }
     public function post(Request $request, Response $response){
